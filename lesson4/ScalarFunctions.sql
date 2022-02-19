@@ -74,7 +74,8 @@ GO
 select value Students
 from string_split('basket|sony|ice|hip|shake|scope|tarzan', '|')
 
-/*
+
+/*
 basket
 sony
 ice
@@ -118,7 +119,7 @@ GO
 
 DECLARE @today date = GETDATE()
 SELECT DATENAME(yy, @today)     
-, --2022
+ --2022,
        DATENAME(MONTH, @today)  
 , --Февраль
        DATENAME(DAY , @today)   
