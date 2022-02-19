@@ -130,19 +130,21 @@ PRINT @someDecimal22
 
 ----DATE
 
-declare @somed date = '30.12.2022' -- '30-12-2022', '30/12/2022, '
-print @somed
+DECLARE @somed date = '30.12.2022' -- '30-12-2022', '30/12/2022, '
+PRINT @somed --2022-12-30
 
-declare @somed1 date = ' 20221230'
-print @somed1
+DECLARE  @somed1 date = ' 20221230'
+PRINT @somed1 --2022-12-30
 
 DECLARE @someDate date
 PRINT @someDate
+
 SET @someDate = '2017-12-17'
 PRINT @someDate
 
 SET @someDate = '20170117'
 PRINT @someDate
+
 SET @someDate = '17-01-2017'
 PRINT @someDate
 
@@ -150,26 +152,45 @@ PRINT @someDate
 
 ----DATETIME
 
-declare @dt datetime = '31-12/2022 00:00:00' -- 31-12/2022 00:00:00, 31/12.2022 00:00:00
-set @dt = '27.02/2022'
-print @dt
+DECLARE @dt datetime = '31-12/2022 00:00:00' -- 31-12/2022 00:00:00, 31/12.2022 00:00:00
+SET @dt = '27.02/2022'
+PRINT @dt
 
-DECLARE @someDateTime datetime = '01-17-2017 03:36:49'
+DECLARE @someDateTime datetime = '01-12-2017 03:36:49'
 PRINT @someDateTime
 
-SET @someDateTime = '20170117 03:36:49:123'
+SET @someDateTime = '20170117 03:36:49:554'
 PRINT @someDateTime
 
 ----TIME
-DECLARE @someTime time = '03:36:49:1'
-PRINT @someTime
+DECLARE @someTime time = '03:36:49:1' 
+PRINT @someTime --03:36:49.0010000
+SET @someTime='03:36:49.1'
+PRINT @someTime --03:36:49.1000000
+
+SET @someTime='12:00:00 AM'
+PRINT @someTime --00:00:00.0000000
+
+SET @someTime='24:00:00 AM'
+PRINT @someTime --error
+
+SET @someTime = '03:36:49.123456'
+PRINT @someTime --03:36:49.1234560
 
 SET @someTime = '03:36:49.1234567'
-PRINT @someTime
+PRINT @someTime  -- округление 03:36:49.1234567
+
 
 ----NCHAR
-DECLARE @someNChar nchar(15) = N'какой-то текст'
-PRINT @someNChar
+DECLARE @someNChar nchar = N'какой-то текст'
+PRINT @someNChar + cast(len(@someNChar) as nchar)  -- к1   // по умолчанию длина строки nchar = 1 символ 
+
+DECLARE @someNChar1 nchar(15) = N'какой-то текст'
+PRINT   @someNChar1 + cast(len(@someNChar1) as nchar) -- какой-то текст 14   
+
+ SET @someNChar1 ='текст'
+ PRINT   @someNChar1 + cast(len(@someNChar1) as nchar) -- текст          5       
+
 
 ----NVARCHAR
 DECLARE @someNVarChar nvarchar(15) = N'какой-то текст'
@@ -178,14 +199,25 @@ PRINT @someNVarChar
 --Arithmetic operators
 --приоритет типов данных https://msdn.microsoft.com/library/ms190309(SQL.130).aspx
 
----- ќператор + (сложение)
+---- оператор + (сложение)
 
 DECLARE @x int = 123
-,       @y int = 456
-SELECT @x + @y
+DECLARE @y int = 456
+SELECT @x + @y     -- выборка из неоткуда
+DECLARE @x1 int = 123, @y1 int = 456
+SELECT @x1 + @y1
 
-DECLARE @date datetime = '20170117 12:00'
-SELECT @date + 1.25
+DECLARE
+@x2 int = 1,
+@y2 int = 2,
+@z2 int = 3
+SELECT @x2 + @y2 * @z2
+
+DECLARE @date1 datetime = '20220117 12:00 AM'
+SELECT @date1 + 1.25 --2022-01-18 18:00:00.000 добавили к дате 1 день и 6 часов (24/0.25)
+PRINT @date1
+SELECT @date1 + 1.5
+print @date1 
 
 SELECT 'Hello, ' + 'world!' --конкатенация
 
@@ -193,10 +225,10 @@ SELECT 'Hello, ' + 'world!' --конкатенация
 ---- ќператор * (умножение)
 ---- ќператор / (деление)
 
-SELECT 10/3
-,      17/10
-,      10./3
-,      10/3.
+SELECT 10/3  --3
+,      17/10 --1
+,      10./3 --3.333333
+,      10/3. --3.333333
 
 SELECT 1/0 -- Divide by zero error encountered.
 
